@@ -1,5 +1,5 @@
 require 'locked_gate/version'
-require 'locked_gate/railtie'
+require 'locked_gate/engine'
 require 'locked_gate/configuration'
 
 module LockedGate
