@@ -6,58 +6,45 @@ RSpec.describe LockedGate do
   end
 
   describe 'default configuration' do
-    let(:locked_gate_class) { described_class.clone }
+    let(:locked_gate_class) { described_class.dup }
 
     context 'when there are not config set' do
-      it ':post_param receive default value' do
-        expect(locked_gate_class.configuration.post_param).to eq :token
-      end
-
-      it ':query_string_param receive default value' do
-        expect(locked_gate_class.configuration.query_string_param).to eq :token
-      end
-
       it ':expiration_param receive default value' do
         expect(locked_gate_class.configuration.expiration_param).to eq :exp
       end
 
-      it 'header_regex receive default value' do
-        expect(locked_gate_class.configuration.header_regex).to eq(/Bearer (.*)\s?/)
+      it 'header token is get with default way' do
+        headers = { 'Authorization' => 'Bearer abdcefghij' }
+        expect(locked_gate_class.configuration.token_header_capture_block.call(headers)).to eq 'abdcefghij'
       end
 
-      it 'header_match receive default value' do
-        expect(locked_gate_class.configuration.header_match).to eq '\1'
+      it 'param token is get with default way' do
+        params = { token: 'abdcefghij' }
+        expect(locked_gate_class.configuration.token_params_capture_block.call(params)).to eq 'abdcefghij'
       end
     end
 
     context 'when there are config set' do
       before do
         locked_gate_class.configure do |config|
-          config.post_key :test_post
-          config.query_string_key :query_string_test
           config.expiration_key :expiration
-          config.header_config regex: /my_regex/, match: '\3'
+          config.param_key :test_token
+          config.capture_token_on_header with: proc { |header| header['Authorization'].gsub(/my_regex (\d+)/, '\1') }
         end
       end
 
-      it ':post_param receive configured value' do
-        expect(locked_gate_class.configuration.post_param).to eq :test_post
-      end
-
-      it ':query_string_param receive configured value' do
-        expect(locked_gate_class.configuration.query_string_param).to eq :query_string_test
-      end
-
-      it ':expiration_param receive configured value' do
+      it ':expiration_param receive configured one' do
         expect(locked_gate_class.configuration.expiration_param).to eq :expiration
       end
 
-      it 'header_config :regex receive configured value' do
-        expect(locked_gate_class.configuration.header_regex).to eq(/my_regex/)
+      it 'header token is get with customized method' do
+        headers = { 'Authorization' => 'my_regex 12345678' }
+        expect(locked_gate_class.configuration.token_header_capture_block.call(headers)).to eq '12345678'
       end
 
-      it 'header_config :match receive configured value' do
-        expect(locked_gate_class.configuration.header_match).to eq '\3'
+      it 'param token is get with customized method' do
+        params = { test_token: '12345678' }
+        expect(locked_gate_class.configuration.token_params_capture_block.call(params)).to eq '12345678'
       end
     end
   end
@@ -69,32 +56,25 @@ RSpec.describe LockedGate do
           include LockedGate
 
           gate_unlock_configuration do |config|
-            config.post_key :custom_post_token
-            config.query_string_key :custom_query_string_token
             config.expiration_key :custom_expiration
-            config.header_config regex: /custom_regex/, match: '\2'
+            config.param_key :custom_token
+            config.capture_token_on_header with: proc { |header| header['Authorization'].gsub(/my_custom (\d+)/, '\1') }
           end
         end
       end
 
-      it ':post_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.post_param).to eq :custom_post_token
-      end
-
-      it ':query_string_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.query_string_param).to eq :custom_query_string_token
-      end
-
-      it ':expiration_param receive default value' do
+      it ':expiration_param receive configured one' do
         expect(some_class.custom_locked_gate_configuration.expiration_param).to eq :custom_expiration
       end
 
-      it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_regex).to eq(/custom_regex/)
+      it 'header token is get with customized method' do
+        headers = { 'Authorization' => 'my_custom 12345678' }
+        expect(some_class.custom_locked_gate_configuration.token_header_capture_block.call(headers)).to eq '12345678'
       end
 
-      it 'header_config :match receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\2'
+      it 'param token is get with customized method' do
+        params = { custom_token: '12345678' }
+        expect(some_class.custom_locked_gate_configuration.token_params_capture_block.call(params)).to eq '12345678'
       end
     end
 
@@ -105,24 +85,18 @@ RSpec.describe LockedGate do
         end
       end
 
-      it ':post_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.post_param).to eq :token
-      end
-
-      it ':query_string_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.query_string_param).to eq :token
-      end
-
       it ':expiration_param receive default value' do
         expect(some_class.custom_locked_gate_configuration.expiration_param).to eq :exp
       end
 
-      it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_regex).to eq(/Bearer (.*)\s?/)
+      it 'header token is get with default way' do
+        headers = { 'Authorization' => 'Bearer abdcefghij' }
+        expect(some_class.custom_locked_gate_configuration.token_header_capture_block.call(headers)).to eq 'abdcefghij'
       end
 
-      it 'header_config :match receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\1'
+      it 'param token is get with default way' do
+        params = { token: 'abdcefghij' }
+        expect(some_class.custom_locked_gate_configuration.token_params_capture_block.call(params)).to eq 'abdcefghij'
       end
     end
   end
