@@ -18,7 +18,7 @@ describe LockedGate::Authentication do
     it 'set model Key when token is valid' do
       authentication = described_class.new(configuration, jwt_token)
       authentication.authenticate!
-      expect(LockedGate::Key.attributes).to eq({ user: { email: 'test@test.com'}, expiration: token_expiration, token: jwt_token })
+      expect(LockedGate::Key.attributes).to eq({ user: { email: 'test@test.com' }, expiration: token_expiration, token: jwt_token })
     end
   end
 end

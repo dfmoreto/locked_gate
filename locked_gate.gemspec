@@ -1,4 +1,4 @@
-require_relative "lib/locked_gate/version"
+require_relative 'lib/locked_gate/version'
 
 Gem::Specification.new do |spec|
   spec.name        = 'locked_gate'

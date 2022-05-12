@@ -22,7 +22,7 @@ RSpec.describe LockedGate do
       end
 
       it 'header_regex receive default value' do
-        expect(locked_gate_class.configuration.header_regex).to eq /Bearer (.*)\s?/
+        expect(locked_gate_class.configuration.header_regex).to eq(/Bearer (.*)\s?/)
       end
 
       it 'header_match receive default value' do
@@ -90,7 +90,7 @@ RSpec.describe LockedGate do
       end
 
       it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /custom_regex/
+        expect(some_class.custom_locked_gate_configuration.header_regex).to eq(/custom_regex/)
       end
 
       it 'header_config :match receive default value' do
@@ -118,7 +118,7 @@ RSpec.describe LockedGate do
       end
 
       it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /Bearer (.*)\s?/
+        expect(some_class.custom_locked_gate_configuration.header_regex).to eq(/Bearer (.*)\s?/)
       end
 
       it 'header_config :match receive default value' do
@@ -142,7 +142,7 @@ RSpec.describe LockedGate do
 
       it 'renders a default response' do
         get '/authenticated', headers: { 'Authorization' => 'invalid_token' }
-        json_response = JSON.load(response.body)
+        json_response = JSON.parse(response.body)
         expect(json_response).to eq({ 'message' => 'Invalid token' })
       end
     end
