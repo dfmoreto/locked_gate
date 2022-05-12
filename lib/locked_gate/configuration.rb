@@ -1,29 +1,35 @@
 module LockedGate
   class Configuration
-    attr_reader :post_param, :query_string_param, :expiration_param, :header_regex, :header_match
+    attr_reader :expiration_param, :token_header_capture_block, :token_params_capture_block
 
     def initialize
-      @post_param = @query_string_param = :token
       @expiration_param = :exp
-      @header_regex = /Bearer (.*)\s?/
-      @header_match = '\1'
+
+      @token_params_capture_block = proc do |params|
+        params[:token]
+      end
+
+      @token_header_capture_block = proc do |headers|
+        headers['Authorization'].gsub(/(?:Bearer|Token) (.*)\s?/, '\1')
+      end
     end
 
-    def post_key(key)
-      @post_param = key
+    def capture_token_on_header(with: nil)
+      @token_header_capture_block = with unless with.nil?
     end
 
-    def query_string_key(key)
-      @query_string_param = key
+    def capture_token_on_params(with: nil)
+      @token_params_capture_block = with unless with.nil?
     end
 
     def expiration_key(key)
       @expiration_param = key
     end
 
-    def header_config(regex: nil, match: '')
-      @header_regex = regex unless regex.nil?
-      @header_match = match unless match.empty?
+    def param_key(key)
+      @token_params_capture_block = proc do |params|
+        params[key]
+      end
     end
   end
 end
