@@ -21,6 +21,8 @@ Gem::Specification.new do |spec|
     Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
   end
 
+  spec.add_dependency 'jwt', '>= 1.5.6'
   spec.add_dependency 'rails', '>= 7.0'
+
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
