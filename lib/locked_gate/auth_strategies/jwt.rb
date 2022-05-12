@@ -5,19 +5,19 @@ require_relative '../authentication_error'
 module LockedGate
   module AuthStrategies
     class JWT < Base
-      def authenticate!
-        validate_expiration!
-      rescue ::JWT::DecodeError
-        raise AuthenticationError.new(:invalid_token, 'Invalid token')
-      end
-
-      def expiration
+      expiration do
         expiration_key = configuration.expiration_param.to_s
         Time.zone.at(decoded_token.first[expiration_key])
       end
 
-      def user_data
+      user_info do
         { email: decoded_token.first['email'] }
+      end
+
+      authentication do
+        validate_expiration!
+      rescue ::JWT::DecodeError
+        raise AuthenticationError.new(:invalid_token, 'Invalid token')
       end
 
       private

@@ -38,6 +38,6 @@ describe LockedGate::AuthStrategies::JWT do
 
   it '#user_data returns hash with user fields' do
     auth = described_class.new(configuration, jwt_token)
-    expect(auth.user_data).to eq({ email: 'test@test.com' })
+    expect(auth.user_info).to eq({ email: 'test@test.com' })
   end
 end

@@ -6,22 +6,34 @@ module LockedGate
     class Base
       attr_reader :token
 
+      def self.expiration(&block)
+        define_method(:expiration, &block)
+      end
+
+      def self.user_info(&block)
+        define_method(:user_info, &block)
+      end
+
+      def self.authentication(&block)
+        define_method(:authenticate!, &block)
+      end
+
       def initialize(configuration, token, *options)
         @configuration = configuration
         @token = token
         @options = options
       end
 
+      def expiration
+        nil
+      end
+
+      def user_info
+        {}
+      end
+
       def authenticate!
         false
-      end
-
-      def expiration
-        Time.zone.now
-      end
-
-      def user_data
-        {}
       end
 
       protected
