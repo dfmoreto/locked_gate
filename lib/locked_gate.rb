@@ -2,6 +2,7 @@ require 'locked_gate/version'
 require 'locked_gate/engine'
 require 'locked_gate/authentication'
 require 'locked_gate/configuration'
+require 'locked_gate/token_discovery'
 
 module LockedGate
   def self.included(base)
