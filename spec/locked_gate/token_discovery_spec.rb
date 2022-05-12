@@ -6,7 +6,7 @@ describe LockedGate::TokenDiscovery do
     config = LockedGate::Configuration.new
     config.post_key :post_token
     config.query_string_key :query_string_token
-    config.header_regex regex: /my_token (\w+)/, match: '\1'
+    config.header_config regex: /my_token (\w+)/, match: '\1'
     config
   end
 
@@ -17,7 +17,7 @@ describe LockedGate::TokenDiscovery do
     end
 
     it 'returns match from header if Authorization even if query string or post param are present' do
-      token_discovery = described_class.new(configuration, headers: { 'Authorization' => 'my_token abcdefghi' }, 
+      token_discovery = described_class.new(configuration, headers: { 'Authorization' => 'my_token abcdefghi' },
                                                            params: { query_string_token: 'jklmnopq', post_token: 'rstuvwxyz' })
       expect(token_discovery.token).to eq 'abcdefghi'
     end

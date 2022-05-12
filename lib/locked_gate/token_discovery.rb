@@ -19,7 +19,7 @@ module LockedGate
     def discover_from_header
       return nil unless @headers.key?('Authorization')
 
-      @headers['Authorization'].gsub(@configuration.header_config.regex, @configuration.header_config.match)
+      @headers['Authorization'].gsub(@configuration.header_regex, @configuration.header_match)
     end
 
     def discover_from_query_string

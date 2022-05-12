@@ -1,3 +1,4 @@
+require 'locked_gate/authentication'
 require 'locked_gate/authentication_error'
 
 describe LockedGate::Authentication do

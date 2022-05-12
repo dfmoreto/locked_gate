@@ -19,12 +19,12 @@ RSpec.describe LockedGate do
         expect(locked_gate_class.configuration.expiration_param).to eq :exp
       end
 
-      it 'header_config :regex receive default value' do
-        expect(locked_gate_class.configuration.header_config.regex).to eq /Bearer (.*)\s?/
+      it 'header_regex receive default value' do
+        expect(locked_gate_class.configuration.header_regex).to eq /Bearer (.*)\s?/
       end
 
-      it 'header_config :match receive default value' do
-        expect(locked_gate_class.configuration.header_config.match).to eq '\1'
+      it 'header_match receive default value' do
+        expect(locked_gate_class.configuration.header_match).to eq '\1'
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe LockedGate do
           config.post_key :test_post
           config.query_string_key :query_string_test
           config.expiration_key :expiration
-          config.header_regex regex: /my_regex/, match: '\3'
+          config.header_config regex: /my_regex/, match: '\3'
         end
       end
 
@@ -51,11 +51,11 @@ RSpec.describe LockedGate do
       end
 
       it 'header_config :regex receive configured value' do
-        expect(locked_gate_class.configuration.header_config.regex).to eq(/my_regex/)
+        expect(locked_gate_class.configuration.header_regex).to eq(/my_regex/)
       end
 
       it 'header_config :match receive configured value' do
-        expect(locked_gate_class.configuration.header_config.match).to eq '\3'
+        expect(locked_gate_class.configuration.header_match).to eq '\3'
       end
     end
   end
@@ -81,11 +81,11 @@ RSpec.describe LockedGate do
       end
 
       it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_config.regex).to eq /Bearer (.*)\s?/
+        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /Bearer (.*)\s?/
       end
 
       it 'header_config :match receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_config.match).to eq '\1'
+        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\1'
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe LockedGate do
             config.post_key :custom_post_token
             config.query_string_key :custom_query_string_token
             config.expiration_key :custom_expiration
-            config.header_regex regex: /custom_regex/, match: '\2'
+            config.header_config regex: /custom_regex/, match: '\2'
           end
         end
       end
@@ -116,11 +116,11 @@ RSpec.describe LockedGate do
       end
 
       it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_config.regex).to eq /custom_regex/
+        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /custom_regex/
       end
 
       it 'header_config :match receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_config.match).to eq '\2'
+        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\2'
       end
     end
   end

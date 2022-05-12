@@ -1,3 +1,4 @@
+require 'locked_gate/auth_strategies/jwt'
 require 'locked_gate/authentication_error'
 
 describe LockedGate::AuthStrategies::JWT do

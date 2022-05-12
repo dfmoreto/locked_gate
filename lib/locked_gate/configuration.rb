@@ -1,15 +1,12 @@
 module LockedGate
   class Configuration
-    HeaderConfig = Struct.new(:regex, :match)
-
-    private_constant :HeaderConfig
-
-    attr_reader :post_param, :query_string_param, :expiration_param, :header_config
+    attr_reader :post_param, :query_string_param, :expiration_param, :header_regex, :header_match
 
     def initialize
       @post_param = @query_string_param = :token
       @expiration_param = :exp
-      @header_config = HeaderConfig.new(/Bearer (.*)\s?/, '\1')
+      @header_regex = /Bearer (.*)\s?/
+      @header_match = '\1'
     end
 
     def post_key(key)
@@ -24,9 +21,9 @@ module LockedGate
       @expiration_param = key
     end
 
-    def header_regex(regex: nil, match: '')
-      @header_config.regex = regex unless regex.nil?
-      @header_config.match = match unless match.empty?
+    def header_config(regex: nil, match: '')
+      @header_regex = regex unless regex.nil?
+      @header_match = match unless match.empty?
     end
   end
 end

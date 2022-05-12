@@ -14,27 +14,27 @@ describe LockedGate::Configuration do
     expect(subject.expiration_param).to eq :custom_expiration
   end
 
-  describe '#header_regex' do
-    it ':regex option sets header_config :regex' do
-      subject.header_regex regex: /my_custom_regex/
-      expect(subject.header_config.regex).to eq(/my_custom_regex/)
+  describe '#header_config' do
+    it ':regex option sets header_regex' do
+      subject.header_config regex: /my_custom_regex/
+      expect(subject.header_regex).to eq(/my_custom_regex/)
     end
 
-    it 'header_config :regex keeps the same if :regex is not sent' do
+    it 'header_regex keeps the same if :regex is not sent' do
       expect do
-        subject.header_regex
-      end.not_to change(subject.header_config, :regex)
+        subject.header_config
+      end.not_to change(subject, :header_regex)
     end
 
-    it ':match option sets header_config :match' do
-      subject.header_regex match: '\5'
-      expect(subject.header_config.match).to eq '\5'
+    it ':match option sets header_match' do
+      subject.header_config match: '\5'
+      expect(subject.header_match).to eq '\5'
     end
 
-    it 'header_config :match keeps the same if :match is not sent' do
+    it 'header_match keeps the same if :match is not sent' do
       expect do
-        subject.header_regex
-      end.not_to change(subject.header_config, :match)
+        subject.header_config
+      end.not_to change(subject, :header_match)
     end
   end
 end
