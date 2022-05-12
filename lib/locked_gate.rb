@@ -18,12 +18,12 @@ module LockedGate
 
   module ClassMethods
     def gate_unlock_configuration(&block)
-      @custom_locked_gate_configuration = LockedGate.configuration
+      @custom_locked_gate_configuration = LockedGate.configuration.dup
       block.call(@custom_locked_gate_configuration)
     end
 
     def custom_locked_gate_configuration
-      @custom_locked_gate_configuration ||= LockedGate.configuration
+      @custom_locked_gate_configuration ||= LockedGate.configuration.dup
     end
   end
 end

@@ -61,34 +61,6 @@ RSpec.describe LockedGate do
   end
 
   describe 'including' do
-    context 'without custom configuration' do
-      let(:some_class) do
-        Class.new do
-          include LockedGate
-        end
-      end
-
-      it ':post_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.post_param).to eq :token
-      end
-
-      it ':query_string_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.query_string_param).to eq :token
-      end
-
-      it ':expiration_param receive default value' do
-        expect(some_class.custom_locked_gate_configuration.expiration_param).to eq :exp
-      end
-
-      it 'header_config :regex receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /Bearer (.*)\s?/
-      end
-
-      it 'header_config :match receive default value' do
-        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\1'
-      end
-    end
-
     context 'with custom configuration' do
       let(:some_class) do
         Class.new do
@@ -121,6 +93,34 @@ RSpec.describe LockedGate do
 
       it 'header_config :match receive default value' do
         expect(some_class.custom_locked_gate_configuration.header_match).to eq '\2'
+      end
+    end
+
+    context 'without custom configuration' do
+      let(:some_class) do
+        Class.new do
+          include LockedGate
+        end
+      end
+
+      it ':post_param receive default value' do
+        expect(some_class.custom_locked_gate_configuration.post_param).to eq :token
+      end
+
+      it ':query_string_param receive default value' do
+        expect(some_class.custom_locked_gate_configuration.query_string_param).to eq :token
+      end
+
+      it ':expiration_param receive default value' do
+        expect(some_class.custom_locked_gate_configuration.expiration_param).to eq :exp
+      end
+
+      it 'header_config :regex receive default value' do
+        expect(some_class.custom_locked_gate_configuration.header_regex).to eq /Bearer (.*)\s?/
+      end
+
+      it 'header_config :match receive default value' do
+        expect(some_class.custom_locked_gate_configuration.header_match).to eq '\1'
       end
     end
   end
