@@ -24,8 +24,9 @@ module LockedGate
       @expiration_param = key
     end
 
-    def header_regex(regex: //, match: '\1')
-      @header_config = HeaderConfig.new(regex, match)
+    def header_regex(regex: nil, match: '')
+      @header_config.regex = regex unless regex.nil?
+      @header_config.match = match unless match.empty?
     end
   end
 end
