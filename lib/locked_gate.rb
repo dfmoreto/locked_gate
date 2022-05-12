@@ -7,6 +7,10 @@ require 'locked_gate/token_discovery'
 module LockedGate
   def self.included(base)
     base.extend ClassMethods
+
+    base.rescue_from LockedGate::AuthenticationError do |exception|
+      render(json: { message: exception.message }, status: :unauthorized)
+    end
   end
 
   def self.configure(&block)

@@ -65,7 +65,7 @@ RSpec.describe LockedGate do
   describe 'including' do
     context 'with custom configuration' do
       let(:some_class) do
-        Class.new do
+        Class.new(ActionController::API) do
           include LockedGate
 
           gate_unlock_configuration do |config|
@@ -100,7 +100,7 @@ RSpec.describe LockedGate do
 
     context 'without custom configuration' do
       let(:some_class) do
-        Class.new do
+        Class.new(ActionController::API) do
           include LockedGate
         end
       end
@@ -134,10 +134,17 @@ RSpec.describe LockedGate do
       expect(response).to have_http_status :ok
     end
 
-    it 'raises AuthenticationError when token is invalid' do
-      expect do
-        get '/authenticated', headers: { 'Authorization' => "invalid_token" }
-      end.to raise_error(LockedGate::AuthenticationError)
+    context 'when token is invalid' do
+      it 'renders status 401' do
+        get '/authenticated', headers: { 'Authorization' => 'invalid_token' }
+        expect(response).to have_http_status :unauthorized
+      end
+
+      it 'renders a default response' do
+        get '/authenticated', headers: { 'Authorization' => 'invalid_token' }
+        json_response = JSON.load(response.body)
+        expect(json_response).to eq({ 'message' => 'Invalid token' })
+      end
     end
   end
 end
