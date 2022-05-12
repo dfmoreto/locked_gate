@@ -1,5 +1,6 @@
 require 'locked_gate/version'
 require 'locked_gate/engine'
+require 'locked_gate/authentication'
 require 'locked_gate/configuration'
 
 module LockedGate
@@ -25,5 +26,11 @@ module LockedGate
     def custom_locked_gate_configuration
       @custom_locked_gate_configuration ||= LockedGate.configuration.dup
     end
+  end
+
+  def authenticate_user!
+    discovery = TokenDiscovery.new(self.class.custom_locked_gate_configuration, params: params, headers: request.headers)
+    auth = Authentication.new(self.class.custom_locked_gate_configuration, discovery.token)
+    auth.authenticate!
   end
 end

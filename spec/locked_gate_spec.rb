@@ -1,3 +1,5 @@
+require 'locked_gate/authentication_error'
+
 RSpec.describe LockedGate do
   it 'has a version number' do
     expect(LockedGate::VERSION).to be_present
@@ -122,6 +124,20 @@ RSpec.describe LockedGate do
       it 'header_config :match receive default value' do
         expect(some_class.custom_locked_gate_configuration.header_match).to eq '\1'
       end
+    end
+  end
+
+  describe 'authenticate_user!', type: :request do
+    it 'renders right status when token is valid' do
+      token = JWT.encode({ email: 'test@test.com', exp: Integer(2.minutes.from_now) }, '123456', 'HS256')
+      get '/authenticated', headers: { 'Authorization' => "Bearer #{token}" }
+      expect(response).to have_http_status :ok
+    end
+
+    it 'raises AuthenticationError when token is invalid' do
+      expect do
+        get '/authenticated', headers: { 'Authorization' => "invalid_token" }
+      end.to raise_error(LockedGate::AuthenticationError)
     end
   end
 end
