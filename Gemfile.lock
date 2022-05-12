@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     locked_gate (0.1.0)
+      jwt (>= 1.5.6)
       rails (>= 7.0)
 
 GEM
@@ -83,6 +84,7 @@ GEM
       activesupport (>= 5.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    jwt (2.3.0)
     loofah (2.17.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
