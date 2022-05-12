@@ -19,8 +19,8 @@ AllCops:
     - 'spec/dummy/db/schema.rb'
     - 'spec/dummy/tmp/**/*'
     - 'spec/dummy/.cache/**/*'
-    - 'spec/dummy/config/puma.rb'
-    - 'spec/dummy/config/boot.rb'
+    - 'spec/dummy/config/**/*'
+    - 'spec/dummy/config.ru'
   
 
 Layout/LineLength:
