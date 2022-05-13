@@ -24,18 +24,21 @@ module LockedGate
 
   module ClassMethods
     def gate_unlock_configuration(&block)
-      @custom_locked_gate_configuration = LockedGate.configuration.dup
-      block.call(@custom_locked_gate_configuration)
-    end
-
-    def custom_locked_gate_configuration
-      @custom_locked_gate_configuration ||= LockedGate.configuration.dup
+      define_method :custom_locked_gate_configuration do
+        @custom_locked_gate_configuration ||= LockedGate.configuration.dup
+        block.call(@custom_locked_gate_configuration)
+        @custom_locked_gate_configuration
+      end
     end
   end
 
+  def custom_locked_gate_configuration
+    @custom_locked_gate_configuration ||= LockedGate.configuration.dup
+  end
+
   def authenticate_user!
-    discovery = TokenDiscovery.new(self.class.custom_locked_gate_configuration, params: params, headers: request.headers)
-    auth = Authentication.new(self.class.custom_locked_gate_configuration, discovery.token)
+    discovery = TokenDiscovery.new(custom_locked_gate_configuration, params: params, headers: request.headers)
+    auth = Authentication.new(custom_locked_gate_configuration, discovery.token)
     auth.authenticate!
   end
 end
