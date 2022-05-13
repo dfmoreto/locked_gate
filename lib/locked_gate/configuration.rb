@@ -27,9 +27,7 @@ module LockedGate
     end
 
     def param_key(key)
-      @token_params_capture_block = proc do |params|
-        params[key]
-      end
+      capture_token_on_params with: proc { |params| params[key] }
     end
   end
 end
