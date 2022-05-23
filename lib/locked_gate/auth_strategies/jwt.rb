@@ -11,7 +11,7 @@ module LockedGate
       end
 
       user_info do
-        { email: decoded_token.first['email'] }
+        { id: decoded_token.first['uid'], email: decoded_token.first['email'] }
       end
 
       authentication do
